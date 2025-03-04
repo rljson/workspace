@@ -506,5 +506,5 @@
   "html.format.enable": true,
   "cSpell.language": "en-US",
   "cSpell.files": ["./**/*.md"],
-  "cSpell.words": ["Gatzsche", "Rljson"]
+  "cSpell.words": ["Gatzsche", "npmjs", "Rljson"]
 }
