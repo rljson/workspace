@@ -503,5 +503,8 @@
     "forceToTop": true
   },
   "dart.analyzeAngularTemplates": false,
-  "html.format.enable": true
+  "html.format.enable": true,
+  "cSpell.language": "en-US",
+  "cSpell.files": ["./**/*.md"],
+  "cSpell.words": ["Gatzsche"]
 }
