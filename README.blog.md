@@ -159,3 +159,85 @@ Install the token in the local `~/.npmrc`
 npm config set //registry.npmjs.org/:_authToken <YOUR_TOKEN_HERE>
 npm config list
 ```
+
+## Configure GitHub to run npm test when a pull request is created
+
+Add a `.github/workflows/run-tests.yml`, containing the following code:
+
+```yml
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+
+name: Tests
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+```
+
+## Configure GitHub not to allow merging pull requests when pipelines were not successful
+
+### Create a status check
+
+- <https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks>
+- <https://stackoverflow.com/questions/68554735/github-action-status-check-missing-from-the-list-of-checks-in-protected-branch-s>
+- <https://stackoverflow.com/a/57685576/1210942>
+
+Make sure that the test workflow (see previous post) has been setup.
+
+Make sure the test workflow was successfully.
+
+Open the repo, e.g. <https://github.com/rljson/hash>
+
+Click `Settings`
+
+Click `Rules`
+
+On the left, click `Rulesets`
+
+On the right, click `Default`
+
+Scroll down to `Require status checks to pass`
+
+Check `Require status checks to pass`
+
+Check `Require branches to be up to date before merging`
+
+Click on `Add checks`
+
+In the `search field`, enter the name of the build step from the work flow, i.
+e. `Build and Test`
+
+Add it.
+
+Click `save changes`.
+
