@@ -84,3 +84,13 @@ In the `middle`, click `Default`
 Make changes
 
 Click `Save changes`
+
+## Delete branches after merge
+
+Open <https://github.com/rljson/.github>
+
+Click `Settings`
+
+Scroll down to `Pull Requests`
+
+Check `Automatically delete head branches`
