@@ -19,6 +19,7 @@
     "luanpotter.dart-import",
     "antfu.vite",
     "vitest.explorer",
-    "hediet.vscode-drawio"
+    "hediet.vscode-drawio",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
