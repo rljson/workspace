@@ -6,7 +6,7 @@ Here we provide information about maintaining the Rljson GitHub account.
 
 | File                                             | Purpose               |
 | ------------------------------------------------ | --------------------- |
-| [README.users.md](README.devs.md)                | For developers        |
+| [README.devs.md](README.devs.md)                 | For developers        |
 | [README.contributors.md](README.contributors.md) | For contributors      |
 | [README.architecture.md](README.architecture.md) | Software architecture |
 | [README.blog.md](README.blog.md)                 | Blog                  |
