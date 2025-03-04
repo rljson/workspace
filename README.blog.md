@@ -1,26 +1,22 @@
 # Blog
 
-Please add new blog post at the end.
+Add new blog post at the end
 
-Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content.
+Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
 
 ## Setup GitHub branch rules
 
-| Date       | Author           |
-| ---------- | ---------------- |
-| 2025-03-04 | Gabriel Gatzsche |
-
 ### Goal
 
-Configure GitHub, to disallow pushing to main.
+Configure GitHub, to disallow pushing to main
 
-Forbid force pushes.
+Forbid force pushes
 
-Enforce branches to start with `feature/`.
+Enforce branches to start with `feature/`
 
-Require pull requests.
+Require pull requests
 
-And more.
+And more
 
 ### Steps
 
@@ -72,3 +68,19 @@ Make the following settings:
 Click `Add`
 
 Click the `green Create button`.
+
+## Edit an existing branch ruleset
+
+Open <https://github.com/rljson/.github>
+
+Click `Settings`
+
+At the `left sidebar`, click `Rules`
+
+Select `Rulesets`
+
+In the `middle`, click `Default`
+
+Make changes
+
+Click `Save changes`
