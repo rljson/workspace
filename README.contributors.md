@@ -12,11 +12,9 @@ Configure GitHub, to disallow pushing to main
 
 Forbid force pushes
 
-Enforce branches to start with `feature/`
-
 Require pull requests
 
-And more
+Require build pipelines to succeed
 
 #### Steps
 
@@ -32,9 +30,7 @@ At the `top menu right` click `Settings`
 
 At the `left sidebar` click `Branches`
 
-Locate `Branch Protection Rules`
-
-Click `Add branch ruleset`
+In the `middle` click `Add branch ruleset`
 
 Enter the following values:
 
@@ -54,12 +50,12 @@ Check the following settings:
 - [x] `Restrict deletions`
 - [x] `Require linear history`
 - [x] `Require a pull request before merging`
-- [x] `Allowed merge methods:`: `Squash, Rebase`
+- [x] `Allowed merge methods:`: `Squash`
+- [x] `Require checks to pass`
+- [x] `Require branches to be up to date before merging`
 - [x] `Block force pushes`
 
-Click `Add`
-
-Click the `green Create button`.
+Click the green the `Create` button.
 
 ### Delete branches after merge, force squashing
 
@@ -69,13 +65,11 @@ Scroll down to `Pull Requests`
 
 Uncheck `Allow merge commits`
 
-Set `Default commit message` to `Pull request title`
-
 Uncheck `Allow rebasing`
 
-Check `Automatically delete head branches`
-
 Check `Always suggest updating pull request branches`
+
+Check `Allow auto-merge`
 
 Check `Automatically delete head branches`
 
