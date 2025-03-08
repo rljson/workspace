@@ -241,3 +241,31 @@ Add it.
 
 Click `save changes`.
 
+## Create template repositories
+
+I would like to create a template repository that I can always use when creating
+new Repos that I can always use.
+
+Open <https://github.com/rljson>
+
+In the `top menu`, select `Repositories`
+
+Select the repository that should become a template
+
+`At the top right` click `Settings`
+
+Below `General` check `Template repository`
+
+## Create a new repo from a template repository
+
+Open <https://github.com/rljson>
+
+Select `Repositories`
+
+Click `New repository`
+
+Below `Repository template` click on the drop down `No template`
+
+Select the desired template repository
+
+Create the repo as used

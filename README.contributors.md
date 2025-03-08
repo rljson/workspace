@@ -4,6 +4,16 @@
 
 ### Create package in GitHub
 
+Open <https://github.com/orgs/rljson/repositories>
+
+At the `top right` click `New repository`
+
+Below `Repository template` click on the drop down `No template`
+
+Select the desired template repository
+
+Create the repo as used
+
 ### Configure GitHub branch rules
 
 #### Goals
@@ -51,7 +61,15 @@ Check the following settings:
 - [x] `Require linear history`
 - [x] `Require a pull request before merging`
 - [x] `Allowed merge methods:`: `Squash`
-- [x] `Require checks to pass`
+- [x] `Require status checks to pass`
+- [x] `Require branches to be up to date before merging`
+
+Click on `Add checks`
+
+In the `search field`, enter `Build`.
+
+Select `Build and Test`, i.e. the workflow added before.
+
 - [x] `Require branches to be up to date before merging`
 - [x] `Block force pushes`
 
@@ -72,37 +90,3 @@ Check `Always suggest updating pull request branches`
 Check `Allow auto-merge`
 
 Check `Automatically delete head branches`
-
-### Configure GitHub to run npm test when a pull request is created
-
-Copy over the `.github/workflows/run-tests.yml` from existing repos to your new repository.
-
-## Don't allow merging pull requests when pipelines were not successful
-
-Open <https://github.com/rljson/>
-
-In the `top menu`, select `Repositories`
-
-Select the desired repository, e.g. `types`
-
-At the `top menu right` click `Settings`
-
-Click `Rules`
-
-On the left, click `Rulesets`
-
-On the right, click `Default`
-
-Scroll down to `Require status checks to pass`
-
-Check `Require status checks to pass`
-
-Check `Require branches to be up to date before merging`
-
-Click on `Add checks`
-
-In the `search field`, enter `Build`.
-
-Select `Build and Test`, i.e. the workflow added before.
-
-Click `save changes`.
