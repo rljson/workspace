@@ -1,7 +1,3 @@
-<!--
-
--->
-
 # Contributors
 
 ## Install GitHub command line
@@ -204,6 +200,18 @@ Check PR status:
 
 ```bash
 gh pr view --json autoMergeRequest
+```
+
+After merge, checkout main:
+
+```bash
+git fetch && git checkout main && git pull
+```
+
+Delete branch locally:
+
+```bash
+git branch -d $BRANCH
 ```
 
 ## Maintain all repositories via CLI
