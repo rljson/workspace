@@ -269,3 +269,89 @@ Below `Repository template` click on the drop down `No template`
 Select the desired template repository
 
 Create the repo as used
+
+## Install GitHub command line
+
+Install GitHub command line on Mac
+
+Mac:
+
+```bash
+brew install gh
+```
+
+Win:
+
+```bash
+winget install --id GitHub.cli
+```
+
+Login
+
+```bash
+gh auth login
+```
+
+## Change settings for all repositories
+
+From time to time we have to change settings for all repositories. Here
+are steps I did today:
+
+```bash
+cd ~/dev/rljson
+```
+
+Create a branch in each repo
+
+```bash
+export BRANCH=my-branch
+for dir in */; do (cd "$dir" && git checkout -b $BRANCH); done
+```
+
+Execute some operations in all folders
+
+```bash
+export OPERATION="npm test"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Stage and commit changes
+
+```bash
+export OPERATION="git commit -am 'My description'"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Publish the current branch
+
+```bash
+for dir in */; do (cd "$dir" && git push -u origin $(git branch --show-current)); done
+```
+
+Push changes
+
+```bash
+for dir in */; do (cd "$dir" && git push); done
+```
+
+Create a pull request
+
+```bash
+export TITLE="Add new login feature"
+export OPERATION="gh pr create --base main --title $TITLE"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Auto merge PR
+
+```bash
+export OPERATION="gh pr merge --auto --squash"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Check auto merge status
+
+```bash
+export OPERATION="gh pr view --json autoMergeRequest"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
