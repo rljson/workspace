@@ -1,44 +1,126 @@
+<!--
+
+-->
+
 # Contributors
 
-## Create a new package
+## Install GitHub command line
 
-### Create package in GitHub
+Install GitHub command line on Mac
+
+```bash
+brew install gh
+```
+
+Login
+
+```bash
+gh auth login
+```
+
+## Create a new package in GitHub
+
+### Export template ruleset
+
+Open <https://github.com/rljson/template/settings/rules>
+
+`Right beside Default` click `...`
+
+Select `Export ruleset`
+
+### Create
 
 Open <https://github.com/orgs/rljson/repositories>
 
 At the `top right` click `New repository`
 
 Below `Repository template` click on the drop down `No template`
+r
+Select the template `template`
 
-Select the desired template repository
+Click on `create`.
 
-Create the repo as used
-
-### Configure GitHub branch rules
-
-#### Goals
-
-Configure GitHub, to disallow pushing to main
-
-Forbid force pushes
-
-Require pull requests
-
-Require build pipelines to succeed
-
-#### Steps
-
-<https://stackoverflow.com/a/57685576/1210942>
-
-Open <https://github.com/rljson/>
-
-In the `top menu`, select `Repositories`
-
-Select the desired repository, e.g. `types`
+### Import branch ruleset
 
 At the `top menu right` click `Settings`
 
 At the `left sidebar` click `Branches`
+
+Right of the `New ruleset` button, click `Import a ruleset`
+
+Chose the ruleset file, downloaded in the first step
+
+Scroll down and click `Create`
+
+### Delete branches after merge, force squashing
+
+In the `top menu right` click `Settings`
+
+Scroll down to `Pull Requests`
+
+Uncheck `Allow merge commits`
+
+Uncheck `Allow rebasing`
+
+Check `Always suggest updating pull request branches`
+
+Check `Allow auto-merge`
+
+Check `Automatically delete head branches`
+
+### Rename template by your project name
+
+Checkout your new project
+
+```bash
+git clone git@github.com:rljson/xyz.git
+```
+
+Open the project in Vscode
+
+```bash
+code new
+```
+
+Press `Cmd+Shift+F`
+
+Check `Case sensitive` search
+
+Replace `template` by `xyz`
+
+Replace `Template` by `Xyz`
+
+Rename `template.ts` into `xyz.ts`
+
+Rename `template.spec.ts` into `xyz.spec.ts`
+
+Open `package.json` and make sure, all links are valid
+
+Open `README.*.md` files and make sure, all links are valid
+
+```bash
+npm install
+npm test
+npm run updateGoldens
+npm run test
+npm run build
+```
+
+In Vscode press `Cmd+Shift+P`
+
+Enter `>create branch from`
+
+Select `head`
+
+Enter `configure-project` and press `Enter`
+
+Commit and push the changes
+
+Create a pull request
+
+## Setting update branch rules step by step
+
+Open <https://github.com/rljson/template/settings/rules>
 
 In the `middle` click `Add branch ruleset`
 
@@ -75,18 +157,68 @@ Select `Build and Test`, i.e. the workflow added before.
 
 Click the green the `Create` button.
 
-### Delete branches after merge, force squashing
+## Full workflow
 
-In the `top menu right` click `Settings`
+## Maintain all repositories via CLI
 
-Scroll down to `Pull Requests`
+From time to time we have to change settings for all repositories. Here
+are steps I did today:
 
-Uncheck `Allow merge commits`
+```bash
+cd ~/dev/rljson
+```
 
-Uncheck `Allow rebasing`
+Create a branch in each repo
 
-Check `Always suggest updating pull request branches`
+```bash
+export BRANCH=my-branch
+for dir in */; do (cd "$dir" && git checkout -b $BRANCH); done
+```
 
-Check `Allow auto-merge`
+Execute some operations in all folders
 
-Check `Automatically delete head branches`
+```bash
+export OPERATION="npm test"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Stage and commit changes
+
+```bash
+export OPERATION="git commit -am 'My description'"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Publish the current branch
+
+```bash
+for dir in */; do (cd "$dir" && git push -u origin $(git branch --show-current)); done
+```
+
+Push changes
+
+```bash
+for dir in */; do (cd "$dir" && git push); done
+```
+
+Create a pull request
+
+```bash
+export TITLE="Add new login feature"
+export OPERATION="gh pr create --base main --title $TITLE"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Auto merge PR
+
+```bash
+export OPERATION="gh pr merge --auto --squash"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Check auto merge status
+
+```bash
+export OPERATION="gh pr view --json autoMergeRequest"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
