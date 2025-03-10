@@ -1,7 +1,3 @@
-<!--
-
--->
-
 # Contributors
 
 ## Install GitHub command line
@@ -159,6 +155,65 @@ Click the green the `Create` button.
 
 ## Full workflow
 
+Checkout main
+
+```bash
+git checkout main
+git fetch
+git pull
+```
+
+Create a branch
+
+```bash
+export BRANCH="use-github-cli-and-maintenance"
+git checkout -b $BRANCH
+```
+
+Make changes
+
+Stage and commit changes
+
+```bash
+git commit -am"Update READMEs: Mass repo operations, using GitHub cli"
+```
+
+Publish branch
+
+```bash
+git push -u origin $BRANCH
+```
+
+Create PR
+
+```bash
+gh pr create --base main --title "Update READMEs: Maintenance & GitHub CLI" --body ""
+```
+
+Set PR to auto merge:
+
+```bash
+gh pr merge --auto --squash
+```
+
+Check PR status:
+
+```bash
+gh pr view --json autoMergeRequest
+```
+
+After merge, checkout main:
+
+```bash
+git fetch && git checkout main && git pull
+```
+
+Delete branch locally:
+
+```bash
+git branch -d $BRANCH
+```
+
 ## Maintain all repositories via CLI
 
 From time to time we have to change settings for all repositories. Here
@@ -221,4 +276,16 @@ Check auto merge status
 ```bash
 export OPERATION="gh pr view --json autoMergeRequest"
 for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Checkout main
+
+```bash
+git checkout main && git fetch && git pull
+```
+
+Delete branch
+
+```bash
+git branch -d $BRANCH
 ```
