@@ -166,7 +166,8 @@ git pull
 Create a branch
 
 ```bash
-export BRANCH="use-github-cli-and-maintenance"
+export BRANCH="my message"
+export MESSAGE="My message"
 git checkout -b $BRANCH
 ```
 
@@ -175,7 +176,13 @@ Make changes
 Stage and commit changes
 
 ```bash
-git commit -am"Update READMEs: Mass repo operations, using GitHub cli"
+git commit -am"$MESSAGE$"
+```
+
+Increase version in package.json
+
+```bash
+pnpm version patch|minor|major
 ```
 
 Publish branch
@@ -187,7 +194,7 @@ git push -u origin $BRANCH
 Create PR
 
 ```bash
-gh pr create --base main --title "Update READMEs: Maintenance & GitHub CLI" --body ""
+gh pr create --base main --title "$MESSAGE" --body ""
 ```
 
 Set PR to auto merge:
@@ -196,10 +203,16 @@ Set PR to auto merge:
 gh pr merge --auto --squash
 ```
 
-Check PR status:
+Check PR status locally:
 
 ```bash
 gh pr view --json autoMergeRequest
+```
+
+Check PR status in GitHub:
+
+```bash
+gh pr view --web
 ```
 
 After merge, checkout main:
@@ -212,6 +225,19 @@ Delete branch locally:
 
 ```bash
 git branch -d $BRANCH
+```
+
+Publish branch:
+
+```bash
+pnpm publish
+```
+
+Add tag:
+
+```bash
+git tag `npm pkg get version`
+git push tags
 ```
 
 ## Maintain all repositories via CLI
