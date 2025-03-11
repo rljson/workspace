@@ -454,7 +454,7 @@ cd ~/dev/rljson
 for dir in */; do (cd "$dir" && pnpm unlink ); done
 ```
 
-## Rename package format into rljson
+## Rename package / repo format into rljson
 
 Go into the rljson folder
 
