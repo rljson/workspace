@@ -355,3 +355,164 @@ Check auto merge status
 export OPERATION="gh pr view --json autoMergeRequest"
 for dir in */; do (cd "$dir" && eval "$OPERATION"); done
 ```
+
+## Maintain all repositories via CLI
+
+From time to time we have to change settings for all repositories. Here
+are steps I did today:
+
+```bash
+cd ~/dev/rljson
+```
+
+Create a branch in each repo
+
+```bash
+export BRANCH=my-branch
+for dir in */; do (cd "$dir" && git checkout -b $BRANCH); done
+```
+
+Execute some operations in all folders
+
+```bash
+export OPERATION="npm test"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Stage and commit changes
+
+```bash
+export OPERATION="git commit -am 'My description'"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Publish the current branch
+
+```bash
+for dir in */; do (cd "$dir" && git push -u origin $(git branch --show-current)); done
+```
+
+Push changes
+
+```bash
+for dir in */; do (cd "$dir" && git push); done
+```
+
+Create a pull request
+
+```bash
+export TITLE="Add new login feature"
+export OPERATION="gh pr create --base main --title $TITLE"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Auto merge PR
+
+```bash
+export OPERATION="gh pr merge --auto --squash"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Check auto merge status
+
+```bash
+export OPERATION="gh pr view --json autoMergeRequest"
+for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+```
+
+Checkout main
+
+```bash
+git checkout main && git fetch && git pull
+```
+
+Delete branch
+
+```bash
+git branch -d $BRANCH
+```
+
+## Multi package workflow
+
+Assume, we are working on the following packages:
+
+- `hash`
+- `validate`
+- `format`
+- `db`
+- `io`
+
+Make sure, there is a `PNPM_HOME` environment variable defined, pointing
+to the pnpm home directory.
+
+Make sure, `$PNPM_HOME` is part of the `PATH` variable.
+
+First, lets call `npm link` for all of the `rljson` packages:
+
+```bash
+cd ~/dev/rljson
+for dir in */; do (cd "$dir" && pnpm unlink ); done
+```
+
+## Rename package format into rljson
+
+Go into the rljson folder
+
+```bash
+cd ~/dev/rljson
+```
+
+Rename the folder
+
+```bash
+mv format rljson
+```
+
+Open the repo with Code
+
+```bash
+code rljson
+```
+
+Rename the repo using GitHub cli
+
+```bash
+gh repo rename rljson
+```
+
+Search for the old name using `Cmd+Shift+F` in all files.
+
+Replace `format` by the new name `rljson`
+
+Run the [publishing workflow](./README.contributors.md#full-workflow)
+
+Set the old package deprecated on NPM:
+
+Visit <https://www.npmjs.com/package/@rljson/format/access>
+
+Enter password
+
+Click on `delete`
+
+## Replace all rljson dependencies by local file reference
+
+```bash
+export OPERATION="jq 'walk(if type == \"object\" then with_entries(if .key | test(\"^@rljson/\") then .value = \"file:../\" + (.key | sub(\"^@rljson/\"; \"\")) else . end) else . end)' package.json > temp.json && mv temp.json package.json" && \
+for dir in */; do (cd "$dir" && eval "$OPERATION" && pnpm install); done
+
+```
+
+## Work with beta versions
+
+Publish a beta version
+
+```bash
+npm version prerelease --preid=beta
+npm publish --tag beta --force
+```
+
+Install a beta version in a dependency
+
+```bash
+pnpm add @rljson/json@beta
+```
