@@ -168,7 +168,7 @@ Implement your changes.
 Create a pull request
 
 ```bash
-export MESSAGE="README.contributors.md: Add documentation about full workflow" && \
+export MESSAGE="Rename .github into workspace" && \
 export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` &&\
 git checkout -b $BRANCH &&\
 git commit -am"$MESSAGE" && \
