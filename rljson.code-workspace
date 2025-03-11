@@ -1,0 +1,11 @@
+{
+  "folders": [
+    { "path": "."},
+    { "path": "../json" },
+    { "path": "../hash" },
+    { "path": "../rljson" },
+    { "path": "../validate" },
+    { "path": "../io" },
+    { "path": "../db" }
+  ]
+}
