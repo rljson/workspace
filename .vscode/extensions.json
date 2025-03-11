@@ -17,9 +17,9 @@
     "pkief.material-icon-theme",
     "dart-code.dart-code",
     "luanpotter.dart-import",
+    "mokkapps.jasmine-test-selector",
     "antfu.vite",
     "vitest.explorer",
-    "hediet.vscode-drawio",
-    "streetsidesoftware.code-spell-checker"
+    "github.vscode-github-actions"
   ]
 }

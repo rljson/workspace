@@ -454,7 +454,7 @@ cd ~/dev/rljson
 for dir in */; do (cd "$dir" && pnpm unlink ); done
 ```
 
-## Rename package / repo format into rljson
+## Rename package format into rljson
 
 Go into the rljson folder
 
@@ -488,7 +488,7 @@ Run the [publishing workflow](./README.contributors.md#full-workflow)
 
 Set the old package deprecated on NPM:
 
-Visit <https://www.npmjs.com/package/@rljson/format/access>
+Visit <https://www.npmjs.com/package/@rljson/rljson/access>
 
 Enter password
 
@@ -515,4 +515,57 @@ Install a beta version in a dependency
 
 ```bash
 pnpm add @rljson/json@beta
+```
+
+## Setup a workspace
+
+Create a workspace file here:
+
+```bash
+touch rljson.code-workspace
+```
+
+Paste the following:
+
+```json
+{
+  "folders": [
+    { "path": "../json" },
+    { "path": "../hash" },
+    { "path": "../rljson" },
+    { "path": "../validate" },
+    { "path": "../io" },
+    { "path": "../db" }
+  ]
+}
+```
+
+Open the workspace.
+
+Init git
+
+```bash
+pnpm init
+```
+
+Init a pnpm workspace
+
+```bash
+touch pnpm-workspace.yaml
+```
+
+Paste
+
+```yaml
+packages:
+  - ../json"
+  - ../hash"
+  - ../rljson"
+  - ../validate"
+  - ../io"
+  - ../db"
+```
+
+```bash
+for dir in */; do (cd "$dir" && pnpm install); done
 ```

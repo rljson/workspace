@@ -163,15 +163,25 @@ git fetch && \
 git pull
 ```
 
-Implement your changes.
-
-Create a pull request
+Create a branch
 
 ```bash
-export MESSAGE="Rename .github into workspace" && \
+export MESSAGE="Add infos about creating workspaces" && \
 export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` &&\
-git checkout -b $BRANCH &&\
-git commit -am"$MESSAGE" && \
+git checkout -b $BRANCH
+```
+
+Implement and commit your changes.
+
+```bash
+git commit -am"$MESSAGE"
+```
+
+Increase version and create a pull request
+
+```bash
+pnpm update --latest &&\
+git commit -am"Update dependencies" &&\
 pnpm version patch && \
 git push -u origin $BRANCH && \
 gh pr create --base main --title "$MESSAGE" --body "" && \
