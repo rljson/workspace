@@ -488,7 +488,7 @@ Run the [publishing workflow](./README.contributors.md#full-workflow)
 
 Set the old package deprecated on NPM:
 
-Visit <https://www.npmjs.com/package/@rljson/format/access>
+Visit <https://www.npmjs.com/package/@rljson/rljson/access>
 
 Enter password
 
@@ -546,4 +546,26 @@ Init git
 
 ```bash
 pnpm init
+```
+
+Init a pnpm workspace
+
+```bash
+touch pnpm-workspace.yaml
+```
+
+Paste
+
+```yaml
+packages:
+  - ../json"
+  - ../hash"
+  - ../rljson"
+  - ../validate"
+  - ../io"
+  - ../db"
+```
+
+```bash
+for dir in */; do (cd "$dir" && pnpm install); done
 ```
