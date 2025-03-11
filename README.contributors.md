@@ -155,163 +155,43 @@ Click the green the `Create` button.
 
 ## Full workflow
 
-Checkout main
+Pull the latest state
 
 ```bash
-git checkout main
-git fetch
+git checkout main && \
+git fetch && \
 git pull
 ```
 
-Create a branch
-
-```bash
-export BRANCH="my message"
-export MESSAGE="My message"
-git checkout -b $BRANCH
-```
-
-Make changes
-
-Stage and commit changes
-
-```bash
-git commit -am"$MESSAGE$"
-```
-
-Increase version in package.json
-
-```bash
-pnpm version patch|minor|major
-```
-
-Publish branch
-
-```bash
-git push -u origin $BRANCH
-```
-
-Create PR
-
-```bash
-gh pr create --base main --title "$MESSAGE" --body ""
-```
-
-Set PR to auto merge:
-
-```bash
-gh pr merge --auto --squash
-```
-
-Check PR status locally:
-
-```bash
-gh pr view --json autoMergeRequest
-```
-
-Check PR status in GitHub:
-
-```bash
-gh pr view --web
-```
-
-After merge, checkout main:
-
-```bash
-git fetch && git checkout main && git pull
-```
-
-Delete branch locally:
-
-```bash
-git branch -d $BRANCH
-```
-
-Publish branch:
-
-```bash
-pnpm publish
-```
-
-Add tag:
-
-```bash
-git tag `npm pkg get version`
-git push tags
-```
-
-## Maintain all repositories via CLI
-
-From time to time we have to change settings for all repositories. Here
-are steps I did today:
-
-```bash
-cd ~/dev/rljson
-```
-
-Create a branch in each repo
-
-```bash
-export BRANCH=my-branch
-for dir in */; do (cd "$dir" && git checkout -b $BRANCH); done
-```
-
-Execute some operations in all folders
-
-```bash
-export OPERATION="npm test"
-for dir in */; do (cd "$dir" && eval "$OPERATION"); done
-```
-
-Stage and commit changes
-
-```bash
-export OPERATION="git commit -am 'My description'"
-for dir in */; do (cd "$dir" && eval "$OPERATION"); done
-```
-
-Publish the current branch
-
-```bash
-for dir in */; do (cd "$dir" && git push -u origin $(git branch --show-current)); done
-```
-
-Push changes
-
-```bash
-for dir in */; do (cd "$dir" && git push); done
-```
+Implement your changes.
 
 Create a pull request
 
 ```bash
-export TITLE="Add new login feature"
-export OPERATION="gh pr create --base main --title $TITLE"
-for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+export MESSAGE="README.contributors.md: Add documentation about full workflow" && \
+export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` &&\
+git checkout -b $BRANCH &&\
+git commit -am"$MESSAGE" && \
+pnpm version patch && \
+git push -u origin $BRANCH && \
+gh pr create --base main --title "$MESSAGE" --body "" && \
+gh pr merge --auto --squash
 ```
 
-Auto merge PR
+After merge, checkout main, delete branch:
 
 ```bash
-export OPERATION="gh pr merge --auto --squash"
-for dir in */; do (cd "$dir" && eval "$OPERATION"); done
+git fetch && git checkout main && \
+git reset --soft origin/main && \
+git stash -m"PR Aftermath" && \
+ git pull && \
+git branch -d $BRANCH && \
+npm publish --access public
 ```
 
-Check auto merge status
+## Update order
 
-```bash
-export OPERATION="gh pr view --json autoMergeRequest"
-for dir in */; do (cd "$dir" && eval "$OPERATION"); done
-```
-
-Checkout main
-
-```bash
-git checkout main && git fetch && git pull
-```
-
-Delete branch
-
-```bash
-git branch -d $BRANCH
-```
+1. json
+2. hash
+3. rljson
+4. validate
