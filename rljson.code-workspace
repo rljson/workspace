@@ -1,11 +1,15 @@
-{
-    "folders": [
-      { "path": "../json" },
-      { "path": "../hash" },
-      { "path": "../rljson" },
-      { "path": "../validate" },
-      { "path": "../io" },
-      { "path": "../db" },
-      { "path": "."}
-    ] 
-  }
+{ "folders": [
+{"path":"../cli/"},
+{"path":"../db/"},
+{"path":"../hash/"},
+{"path":"../icons/"},
+{"path":"../io-fs/"},
+{"path":"../io-mem/"},
+{"path":"../io-test/"},
+{"path":"../io/"},
+{"path":"../json/"},
+{"path":"../rljson/"},
+{"path":"../template/"},
+{"path":"../validate/"},
+{"path":"../workspace/"},
+], "settings": {} }
