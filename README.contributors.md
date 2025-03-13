@@ -21,6 +21,7 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
 - [Workflows](#workflows)
   - [Setup access tokens](#setup-access-tokens)
   - [Rename a repo](#rename-a-repo)
+  - [Delete a repo](#delete-a-repo)
 - [Multi Repo Workflows](#multi-repo-workflows)
   - [Clone or update all repos](#clone-or-update-all-repos)
   - [Update rljson.code-workspace](#update-rljsoncode-workspace)
@@ -299,6 +300,48 @@ Enter password
 
 Click on `delete`
 
+### Delete a repo
+
+#### Delete the repo on GitHub
+
+> DANGEROUS! PLEASE BE CARFUL!
+
+Open <https://github.com/orgs/rljson/repositories>
+
+Select the repo to be delete.
+
+Click on Settings
+
+Scroll Down
+
+Click on `Delete rljson/io-mem`
+
+Follow the instructions
+
+#### Delete the corresponding package on NPM
+
+Visit <https://www.npmjs.com>
+
+Click on the `Avatar`
+
+Select `Packages`
+
+Select the desired organization `rljson`
+
+Select the desired package
+
+Click on `Settings`
+
+Enter password
+
+Scroll down
+
+Click `Delete package`
+
+Enter title fo the package
+
+Done
+
 ## Multi Repo Workflows
 
 ### Clone or update all repos
@@ -503,7 +546,7 @@ git pull
 Update the `MESSAGE` below.
 
 ```bash
-export MESSAGE="Fix scripts" && \
+export MESSAGE="Delete project" && \
 export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` && \
 git checkout -b $BRANCH;
 ```
