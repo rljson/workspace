@@ -503,8 +503,8 @@ git pull
 Update the `MESSAGE` below.
 
 ```bash
-export MESSAGE="Add an update hint";
-export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'`;
+export MESSAGE="Fix scripts" && \
+export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` && \
 git checkout -b $BRANCH;
 ```
 
@@ -532,9 +532,9 @@ git commit -am"Increase version"
 ### Create a pull request
 
 ```bash
-git push -u origin $BRANCH;
-gh pr create --base main --title "$MESSAGE" --body "";
-gh pr merge --auto --squash;
+git push -u origin $BRANCH && \
+gh pr create --base main --title "$MESSAGE" --body "" && \
+gh pr merge --auto --squash && \
 echo -e "\033[34m$(gh pr view --json url | jq -r '.url')\033[0m"
 ```
 
@@ -543,7 +543,7 @@ echo -e "\033[34m$(gh pr view --json url | jq -r '.url')\033[0m"
 Get the PR URL with the following command
 
 ```bash
-echo "Wait until PR is closed ...";
+echo "Wait until PR is closed ..." && \
 until gh pr view --json closed | jq -e '.closed == true' >/dev/null; do
   sleep 2 >/dev/null;
 done;
