@@ -22,7 +22,7 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
   - [Setup access tokens](#setup-access-tokens)
   - [Rename a repo](#rename-a-repo)
 - [Multi Repo Workflows](#multi-repo-workflows)
-  - [Clone all repos](#clone-all-repos)
+  - [Clone or update all repos](#clone-or-update-all-repos)
   - [Update rljson.code-workspace](#update-rljsoncode-workspace)
   - [Update settings](#update-settings)
   - [Edit multiple repos](#edit-multiple-repos)
@@ -301,7 +301,7 @@ Click on `delete`
 
 ## Multi Repo Workflows
 
-### Clone all repos
+### Clone or update all repos
 
 Change into the rljson root
 
@@ -503,9 +503,9 @@ git pull
 Update the `MESSAGE` below.
 
 ```bash
-export MESSAGE="Update README.contributors.md" && \
-export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` &&\
-git checkout -b $BRANCH
+export MESSAGE="Add an update hint";
+export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'`;
+git checkout -b $BRANCH;
 ```
 
 ### Make changes
@@ -514,7 +514,13 @@ Make changes to this workspace
 
 ### Commit
 
-Commit your changes using Vscode, CLi or another tool
+Commit your changes using Vscode, CLi or another tool.
+
+If you have only one commit, execute
+
+```bash
+git commit -am "$MESSAGE"
+```
 
 ### Increase version
 
