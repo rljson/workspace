@@ -30,7 +30,7 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
   - [Checkout main](#checkout-main)
   - [Create a feature branch](#create-a-feature-branch)
   - [Make changes](#make-changes)
-  - [Commit#](#commit)
+  - [Commit](#commit)
   - [Increase version](#increase-version)
   - [Create a pull request](#create-a-pull-request)
   - [Wait until PR is merged](#wait-until-pr-is-merged)
@@ -512,7 +512,7 @@ git checkout -b $BRANCH
 
 Make changes to this workspace
 
-### Commit#
+### Commit
 
 Commit your changes using Vscode, CLi or another tool
 
@@ -529,7 +529,7 @@ git commit -am"Increase version"
 git push -u origin $BRANCH;
 gh pr create --base main --title "$MESSAGE" --body "";
 gh pr merge --auto --squash;
-echo -e "\033[34mgh pr view url\033[0m";
+echo -e "\033[34m$(gh pr view --json url | jq -r '.url')\033[0m"
 ```
 
 ### Wait until PR is merged
