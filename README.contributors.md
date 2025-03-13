@@ -22,6 +22,15 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
   - [Update rljson.code-workspace](#update-rljsoncode-workspace)
   - [Update settings](#update-settings)
   - [Edit multiple repos](#edit-multiple-repos)
+- [Update workspace](#update-workspace)
+  - [Checkout main](#checkout-main)
+  - [Create a feature branch](#create-a-feature-branch)
+  - [Make changes](#make-changes)
+  - [Commit](#commit)
+  - [Increase version](#increase-version)
+  - [Create a pull request](#create-a-pull-request)
+  - [Wait until PR is merged](#wait-until-pr-is-merged)
+  - [Delete feature branch](#delete-feature-branch)
 
 <!-- ....................................................................... -->
 
@@ -470,5 +479,70 @@ git checkout main && git fetch && git pull
 Delete branch
 
 ```bash
+git branch -d $BRANCH
+```
+
+<!-- ........................................................................-->
+
+## Update workspace
+
+### Checkout main
+
+```bash
+git checkout main && \
+git fetch && \
+git pull
+```
+
+### Create a feature branch
+
+Update the `MESSAGE` below.
+
+```bash
+export MESSAGE="Update README.contributors.md" && \
+export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` &&\
+git checkout -b $BRANCH
+```
+
+### Make changes
+
+Make changes to this workspace
+
+### Commit
+
+Commit your changes using Vscode, CLi or another tool
+
+### Increase version
+
+```bash
+pnpm version patch --no-git-tag-version && \
+git commit -am"Increase version"
+```
+
+### Create a pull request
+
+```bash
+git push -u origin $BRANCH && \
+gh pr create --base main --title "$MESSAGE" --body "" && \
+gh pr merge --auto --squash
+```
+
+### Wait until PR is merged
+
+Get the PR URL with the following command
+
+```bash
+gh pr view --json url -q .url
+```
+
+Visit it
+
+### Delete feature branch
+
+```bash
+git fetch && git checkout main && \
+git reset --soft origin/main && \
+git stash -m"PR Aftermath" && \
+git pull && \
 git branch -d $BRANCH
 ```
