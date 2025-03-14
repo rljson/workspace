@@ -1,5 +1,9 @@
 <!--
+@license
+Copyright (c) 2025 Rljson
 
+Use of this source code is governed by terms that can be
+found in the LICENSE file in the root of this package.
 -->
 
 # Blog
@@ -12,13 +16,9 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
 
 - [Install](#install)
   - [Install GitHub command line](#install-github-command-line)
-- [Create and setup a new repo](#create-and-setup-a-new-repo)
-  - [Replace](#replace)
-  - [Create a new repo](#create-a-new-repo)
-- [Setup branch rules](#setup-branch-rules)
-  - [Require deleting branches after merge](#require-deleting-branches-after-merge)
 - [Workflows](#workflows)
   - [Setup access tokens](#setup-access-tokens)
+  - [Create a repo](#create-a-repo)
   - [Rename a repo](#rename-a-repo)
   - [Delete a repo](#delete-a-repo)
 - [Multi Repo Workflows](#multi-repo-workflows)
@@ -64,13 +64,46 @@ gh auth login
 
 <!-- ....................................................................... -->
 
-## Create and setup a new repo
+## Workflows
 
-### Replace
+### Setup access tokens
+
+<https://docs.npmjs.com/creating-and-viewing-access-tokens>
+
+Visit <https://npmjs.com>
+
+Log in
+
+On the `top right` on the `avatar`
+
+Select `access tokens`
+
+Click `Generate New Token`
+
+Select `Granular Access Token`
+
+In the field `Token name` enter `Default`
+
+In the field `Expiration` enter `90 days`
+
+In the field `Permissions` chose `Read and write`
+
+In the field `Select packages` chose `All packages`
+
+Click `Generate token` copy the token
+
+Install the token in the local `~/.npmrc`
+
+```bash
+npm config set //registry.npmjs.org/:_authToken <YOUR_TOKEN_HERE>
+npm config list
+```
+
+### Create a repo
+
+#### Create repo
 
 Replace `table` by the name of your new rep
-
-### Create a new repo
 
 Open <https://github.com/rljson>
 
@@ -84,7 +117,7 @@ Select the desired template repository
 
 Create the repo as used
 
-## Setup branch rules
+#### Setup branch rules
 
 <https://stackoverflow.com/a/57685576/1210942>
 
@@ -128,7 +161,7 @@ Click `Create`
 
 Authenticate
 
-### Require deleting branches after merge
+#### Require deleting branches after merge
 
 Open <https://github.com/rljson/table>
 
@@ -145,42 +178,60 @@ Apply the following settings:
 - [x] `Allow auto-merge`
 - [x] `Automatically delete head branches`
 
-<!-- ....................................................................... -->
+#### Prepare project
 
-## Workflows
-
-### Setup access tokens
-
-<https://docs.npmjs.com/creating-and-viewing-access-tokens>
-
-Visit <https://npmjs.com>
-
-Log in
-
-On the `top right` on the `avatar`
-
-Select `access tokens`
-
-Click `Generate New Token`
-
-Select `Granular Access Token`
-
-In the field `Token name` enter `Default`
-
-In the field `Expiration` enter `90 days`
-
-In the field `Permissions` chose `Read and write`
-
-In the field `Select packages` chose `All packages`
-
-Click `Generate token` copy the token
-
-Install the token in the local `~/.npmrc`
+Checkout the project
 
 ```bash
-npm config set //registry.npmjs.org/:_authToken <YOUR_TOKEN_HERE>
-npm config list
+cd ~/dev/rljson
+git clone git@github.com:rljson/table.git
+cd table
+pnpm install
+pnpm build
 ```
+
+Open project with vscode
+
+```bash
+code .
+```
+
+Prepare a new branch and pull request
+
+```bash
+export PR_TITLE="Rename template into table"
+```
+
+[Create a feature branch](#create-a-feature-branch)
+
+#### Rename template into table
+
+```bash
+find . -type f \( -name "*.ts" -o -name "*.md" -name "package.json" \) -not -path "./node_modules/*" -exec sed -i '' 's/Template/Table/g' {} +
+find . -type f \( -name "*.ts" -o -name "*.md" -name "package.json" \) -not -path "./node_modules/*" -exec sed -i '' 's/template/table/g' {} +
+find . -type f -not -path "*/node_modules/*" -not -path "*/.*" -name "*template*" -exec bash -c 'mv "$0" "${0/template/table}"' {} \;
+```
+
+#### Update goldens
+
+```bash
+pnpm updateGoldens
+```
+
+#### Commit the initial state
+
+```bash
+git add .
+git commit -am "$PR_TITLE"
+```
+
+#### Merge and publish
+
+```bash
+code `README.contributors.md`
+```
+
+Go to section `### Update dependencies` and follow the instruction
 
 ### Rename a repo
 
