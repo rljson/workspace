@@ -13,11 +13,10 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
 - [Install](#install)
   - [Install GitHub command line](#install-github-command-line)
 - [Create and setup a new repo](#create-and-setup-a-new-repo)
+  - [Replace](#replace)
   - [Create a new repo](#create-a-new-repo)
 - [Setup branch rules](#setup-branch-rules)
-  - [Delete branches after merge](#delete-branches-after-merge)
-  - [Run npm test on pull requests](#run-npm-test-on-pull-requests)
-  - [Require pipelines to run](#require-pipelines-to-run)
+  - [Require deleting branches after merge](#require-deleting-branches-after-merge)
 - [Workflows](#workflows)
   - [Setup access tokens](#setup-access-tokens)
   - [Rename a repo](#rename-a-repo)
@@ -27,12 +26,12 @@ Use Vscode's `Cmd+KJ` + `CMD+K1` for folding and unfolding content
   - [Update rljson.code-workspace](#update-rljsoncode-workspace)
   - [Update settings](#update-settings)
   - [Edit multiple repos](#edit-multiple-repos)
-- [Update workspace](#update-workspace)
+- [Workflow](#workflow)
+  - [Set a PR title](#set-a-pr-title)
   - [Checkout main](#checkout-main)
   - [Create a feature branch](#create-a-feature-branch)
-  - [Make changes](#make-changes)
+  - [Debug and develop](#debug-and-develop)
   - [Commit](#commit)
-  - [Increase version](#increase-version)
   - [Create a pull request](#create-a-pull-request)
   - [Wait until PR is merged](#wait-until-pr-is-merged)
   - [Delete feature branch](#delete-feature-branch)
@@ -67,6 +66,10 @@ gh auth login
 
 ## Create and setup a new repo
 
+### Replace
+
+Replace `table` by the name of your new rep
+
 ### Create a new repo
 
 Open <https://github.com/rljson>
@@ -85,7 +88,7 @@ Create the repo as used
 
 <https://stackoverflow.com/a/57685576/1210942>
 
-Open <https://github.com/rljson/.github>
+Open <https://github.com/rljson/table>
 
 Click `Settings`
 
@@ -101,7 +104,6 @@ Enter the following values:
 | ------------------ | ------- |
 | Ruleset Name       | Default |
 | Enforcement status | Active  |
-| Bypass list        |         |
 
 Locate `Branch targeting criteria`
 
@@ -114,114 +116,34 @@ Check the following settings:
 - [x] `Restrict deletions`
 - [x] `Require linear history`
 - [x] `Require a pull request before merging`
-- [x] `Allowed merge methods:`: `Squash, Rebase`
+  - [x] `Allowed merge methods:`: `Squash`
+- [x] `Require status checks to pass`
+  - [x] `Require branches to be up to date before merging`
+  - Click `Add checks`
+  - Enter `Build` into the search field
+  - Select `Build and Test` GitHub Actions
 - [x] `Block force pushes`
-- [x] `Restrict branch names`
 
-After having checked `Restrict branch names`, click `Add restriction`
+Click `Create`
 
-Make the following settings:
+Authenticate
 
-| Key              | Value                              |
-| ---------------- | ---------------------------------- |
-| Applies to       | Branch name                        |
-| Requirement      | Must start with a matching pattern |
-| Matching pattern | feature/                           |
+### Require deleting branches after merge
 
-Click `Add`
-
-Click the `green Create button`.
-
-### Delete branches after merge
-
-Open <https://github.com/rljson/.github>
+Open <https://github.com/rljson/table>
 
 Click `Settings`
 
 Scroll down to `Pull Requests`
 
-Check `Automatically delete head branches`
+Apply the following settings:
 
-### Run npm test on pull requests
-
-Add a `.github/workflows/run-tests.yml`, containing the following code:
-
-```yml
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-
-name: Tests
-
-on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
-
-jobs:
-  build:
-    name: Run tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Cache npm dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-```
-
-### Require pipelines to run
-
-#### Create a status check
-
-- <https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks>
-- <https://stackoverflow.com/questions/68554735/github-action-status-check-missing-from-the-list-of-checks-in-protected-branch-s>
-- <https://stackoverflow.com/a/57685576/1210942>
-
-Make sure that the test workflow (see previous post) has been setup.
-
-Make sure the test workflow was successfully.
-
-Open the repo, e.g. <https://github.com/rljson/hash>
-
-Click `Settings`
-
-Click `Rules`
-
-On the left, click `Rulesets`
-
-On the right, click `Default`
-
-Scroll down to `Require status checks to pass`
-
-Check `Require status checks to pass`
-
-Check `Require branches to be up to date before merging`
-
-Click on `Add checks`
-
-In the `search field`, enter the name of the build step from the work flow, i.
-e. `Build and Test`
-
-Add it.
-
-Click `save changes`.
+- [ ] `Allow merge commits`
+- [x] `Allow squash merging`
+- [ ] `Allow rebase merging`
+- [x] `Alway suggest updating pull request branches`
+- [x] `Allow auto-merge`
+- [x] `Automatically delete head branches`
 
 <!-- ....................................................................... -->
 
@@ -531,73 +453,74 @@ git branch -d $BRANCH
 
 <!-- ........................................................................-->
 
-## Update workspace
+## Workflow
+
+### Set a PR title
+
+```bash
+export PR_TITLE="PR Title"
+```
 
 ### Checkout main
 
 ```bash
-git checkout main && \
-git fetch && \
+git checkout main
+git fetch
 git pull
 ```
 
 ### Create a feature branch
 
-Update the `MESSAGE` below.
-
 ```bash
-export MESSAGE="Delete project" && \
-export BRANCH=`echo "$MESSAGE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'` && \
-git checkout -b $BRANCH;
+export BRANCH=`echo "$PR_TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_]/_/g'`
+git checkout -b $BRANCH
 ```
 
-### Make changes
+### Debug and develop
 
-Make changes to this workspace
+Debug and develop
 
 ### Commit
 
-Commit your changes using Vscode, CLi or another tool.
-
-If you have only one commit, execute
+If you only have one thing changed, execute
 
 ```bash
-git commit -am "$MESSAGE"
-```
-
-### Increase version
-
-```bash
-pnpm version patch --no-git-tag-version && \
-git commit -am"Increase version"
+git add . && git commit -m "$PR_TITLE"
 ```
 
 ### Create a pull request
 
 ```bash
-git push -u origin $BRANCH && \
-gh pr create --base main --title "$MESSAGE" --body "" && \
-gh pr merge --auto --squash && \
-echo -e "\033[34m$(gh pr view --json url | jq -r '.url')\033[0m"
+git push -u origin $BRANCH
+gh pr create --base main --title "$PR_TITLE" --body ""
+gh pr merge --auto --squash
 ```
 
 ### Wait until PR is merged
 
-Get the PR URL with the following command
-
 ```bash
-echo "Wait until PR is closed ..." && \
-until gh pr view --json closed | jq -e '.closed == true' >/dev/null; do
-  sleep 2 >/dev/null;
-done;
+echo -e "\033[34m$(gh pr view --json url | jq -r '.url')\033[0m"
+echo -e "\033[33mWait until PR is closed or merged ...\033[0m"
+
+while true; do
+  STATUS=$(gh pr view --json state | jq -r '.state')
+  if [ "$STATUS" = "CLOSED" ] || [ "$STATUS" = "MERGED" ]; then
+    echo -e "\033[32mPR has been merged or closed.\033[0m"
+    break
+  elif [ "$STATUS" = "FAILED" ]; then
+    echo -e "\033[31mError: PR has failed.\033[0m"
+    exit 1
+  fi
+  sleep 2
+done
 ```
 
 ### Delete feature branch
 
 ```bash
-git fetch && git checkout main && \
-git reset --soft origin/main && \
-git stash -m"PR Aftermath" && \
-git pull && \
+git fetch && git checkout main
+git reset --soft origin/main
+git stash -m"PR Aftermath"
+git pull
 git branch -d $BRANCH
 ```
